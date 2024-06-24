@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# TypeScript
+dist/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Debugger specific files
+debug/
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Production keys and configs
+config/*.key
+config/*.pem
