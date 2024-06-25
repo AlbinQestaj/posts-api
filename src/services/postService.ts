@@ -3,33 +3,39 @@ import { dynamoDBClient } from "../utils/dynamoDBClient";
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 
 const TableName = "Posts";
-
 export const getPosts = async (
   page: number,
   limit: number
 ): Promise<{ posts: Post[]; totalPages: number }> => {
-  // Calculate the starting index
-  const params: DocumentClient.ScanInput = {
+  let params: DocumentClient.ScanInput = {
     TableName,
     Limit: limit,
-    ExclusiveStartKey:
-      page > 1 ? { postId: `${page - 1}#${limit}` } : undefined,
   };
 
-  // Scan the DynamoDB table
-  const data = await dynamoDBClient.scan(params).promise();
+  let startKey = null;
+  let posts: Post[] = [];
 
-  // Calculate total posts and total pages
+  for (let i = 1; i < page; i++) {
+    const data = await dynamoDBClient.scan(params).promise();
+    startKey = data.LastEvaluatedKey;
+    if (!startKey) break; // No more pages
+
+    params.ExclusiveStartKey = startKey;
+  }
+
+  const data = await dynamoDBClient.scan(params).promise();
+  posts = data.Items as Post[];
+
   const countParams: DocumentClient.ScanInput = {
     TableName,
-    Select: "COUNT",
+    Select: 'COUNT',
   };
   const countData = await dynamoDBClient.scan(countParams).promise();
   const totalPosts = countData.Count || 0;
   const totalPages = Math.ceil(totalPosts / limit);
 
   return {
-    posts: data.Items as Post[],
+    posts,
     totalPages,
   };
 };
