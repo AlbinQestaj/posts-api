@@ -4,7 +4,7 @@ import { errorHandler } from './middleware/errorHandler';
 import cors from 'cors';
 
 const app = express();
-app.use(cors({ origin: 'https://posts-tau-one.vercel.app/' }));
+app.use(cors({ origin: 'https://posts-tau-one.vercel.app' }));
 
 app.use(express.json());
 // Root route
