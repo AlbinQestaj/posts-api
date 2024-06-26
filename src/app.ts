@@ -7,6 +7,10 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+// Root route
+app.get('/', (req, res) => {
+  res.send('Welcome to the API!');
+});
 app.use('/api/posts', postRoutes);
 app.use(errorHandler);
 
