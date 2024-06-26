@@ -1,14 +1,10 @@
-import AWS from 'aws-sdk';
-import dotenv from 'dotenv';
-dotenv.config();
 
-// Configure AWS SDK
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-});
+import AWS from "aws-sdk";
 
+// Configure the AWS SDK for the region
+AWS.config.update({ region: "us-east-1" });
+
+// Initialize the DynamoDB DocumentClient
 const dynamoDBClient = new AWS.DynamoDB.DocumentClient();
 
 export { dynamoDBClient };
